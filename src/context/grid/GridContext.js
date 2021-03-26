@@ -12,15 +12,21 @@ import {
 const gridReducer = (state, action) => {
   switch (action.type) {
     case GRID_IMAGES_SET:
-      return { ...state, images: action.images };
+      return { ...state, images: action.images, imagesProcessing: false };
     case GRID_IMAGES_ERROR_SET:
-      return { ...state, imagesError: action.error };
+      return { ...state, imagesError: action.error, imagesProcessing: false };
     case GRID_SET:
-      return { ...state, grid: action.grid };
+      return { ...state, grid: action.grid, gridProcessing: false };
     case GRID_ERROR_SET:
-      return { ...state, gridError: action.error };
+      return { ...state, gridError: action.error, gridProcessing: false };
     case GRID_ERRORS_CLEAR:
-      return { ...state, imagesError: "", gridError: "" };
+      return {
+        ...state,
+        imagesError: "",
+        imagesProcessing: true,
+        gridError: "",
+        gridProcessing: true,
+      };
     default:
       return state;
   }
@@ -58,7 +64,8 @@ const getGrid = (dispatch) => () => {
 
 const updateGrid = (dispatch) => (items) => {
   dispatch({ type: GRID_ERRORS_CLEAR });
-  callChangeGrid(items,
+  callChangeGrid(
+    items,
     (response) => {
       dispatch({ type: GRID_SET, grid: response.data.items });
     },
@@ -76,8 +83,10 @@ export const { Context, Provider } = createDataContext(
   { loadImages, getGrid, updateGrid },
   {
     images: [],
-    iamgesError: "",
+    imagesError: "",
+    imagesProcessing: false,
     grid: [],
     gridError: "",
+    gridProcessing: false,
   }
 );

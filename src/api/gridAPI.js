@@ -22,7 +22,7 @@ export const callFindGrid = (onSuccess, onError) => {
 
 export const callChangeGrid = (items, onSuccess, onError) => {
   try {
-    GridAPI.put("/grid", items)
+    GridAPI.put("/grid", {items})
       .then((response) => onSuccess(response))
       .catch((reason) => onError(reason));
   } catch (error) {
